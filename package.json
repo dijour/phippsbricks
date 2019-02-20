@@ -3,11 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "components": "^0.1.0",
     "firebase": "^5.8.2",
+    "google-map-react": "^1.1.2",
     "google-maps-react": "^2.0.2",
+    "prop-types": "^15.7.2",
     "react": "^16.8.1",
     "react-dom": "^16.8.1",
-    "react-scripts": "2.1.5"
+    "react-pure-render": "^1.0.2",
+    "react-scripts": "2.1.5",
+    "styled-components": "^4.1.3"
   },
   "scripts": {
     "start": "react-scripts start",
