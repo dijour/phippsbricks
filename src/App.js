@@ -147,6 +147,30 @@ class App extends Component {
       });
     }
   }
+
+  pushAutoLocation = () => {
+    let that = this;
+    if (this.state.currentLocation !== null) {
+      var date = new Date();
+      let db = fire.firestore();
+      db.collection("autoLogged").add({
+        lat: that.state.currentLocation.lat,
+        lng: that.state.currentLocation.lng,
+        time: date.toLocaleTimeString()
+      })
+      .then(function() {
+          console.log("Document successfully written!")
+          that.setState({
+            submitted: "Submitted!"
+          })
+          // window.location.reload();
+      })
+      .catch(function(error) {
+          console.error("Error writing document: ", error);
+      });
+    }
+  }
+
   componentDidMount() {
     let db = fire.firestore();
     var wholeData = [];
@@ -169,7 +193,7 @@ class App extends Component {
             lat: coords.latitude,
             lng: coords.longitude
           }
-        });
+        }, () => this.pushAutoLocation());
       });
     }
   }
