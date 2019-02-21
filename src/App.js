@@ -129,7 +129,10 @@ class App extends Component {
 
   handleChange = (e) => {
     e.preventDefault();
-    this.setState({inscription: e.target.value}
+    this.setState({
+      inscription: e.target.value,
+      submitted: false
+    }
       ,() => this.updateSearchResults()
       );
   }
@@ -220,7 +223,7 @@ class App extends Component {
             pleaseSelectBrick: false,
             pleaseSelectLocation: false,
             selectedBrick: null
-          }, () => that.componentDidMount())
+          })
           // window.location.reload();
       })
       .catch(function(error) {
