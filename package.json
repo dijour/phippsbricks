@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "algoliasearch": "^3.32.0",
     "components": "^0.1.0",
     "firebase": "^5.8.2",
     "google-map-react": "^1.1.2",
