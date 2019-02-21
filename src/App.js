@@ -27,7 +27,11 @@ class App extends Component {
       results: [],
       selectedBrick: null,
       pleaseSelectBrick: false,
-      pleaseSelectLocation: false
+      pleaseSelectLocation: false,
+      defaultCenter: {
+        lat: 40.43920267930719,
+        lng: -79.9481821247
+      }
     }
   }
 
@@ -74,54 +78,32 @@ class App extends Component {
             :
             <div></div>
           }
-
-          {/* <h3>Current Location: </h3> */}
-          {this.state.currentLocation !== null ?
-          <div>
-            {/* <div>{this.state.currentLocation.lat}, {this.state.currentLocation.lng}</div> */}
-            {/* <h3>Selected Location: </h3> */}
-            {/* {this.state.actualLocation !== null ?
-            <div>{this.state.actualLocation.lat}, {this.state.actualLocation.lng}</div>
-            :
-            <div>Unknown</div>
-            }
-            <h3>Meters between Current and Selected: </h3> */}
-            {/* {this.state.actualLocation !== null ?
-            <div>{this.getDistance(this.state.currentLocation, this.state.actualLocation)}</div>
-            :
-            <div>Unknown</div>
-            } */}
-            <br/>
-            <div style={{ height: '60vh', width: '80vw'}}>
-              <GoogleMapReact
-                bootstrapURLKeys={{ key: 'AIzaSyDcMQLOO-WbqT-IopP9CmBzkmCBzoG67fQ' }}
-                defaultCenter={this.state.currentLocation}
-                defaultZoom={this.state.zoom}
-                options={this.getMapOptions}
-                onClick={e => this.mapClicked(e)}
-              >
-                {/* <Marker
-                text={"Current location"}
-                lat={this.state.currentLocation.lat}
-                lng={this.state.currentLocation.lng}
-                /> */}
-              {this.state.actualLocation !== null ?
-                <Marker
-                text={"Selected location"}
-                lat={this.state.actualLocation.lat}
-                lng={this.state.actualLocation.lng}
-                />
-              :
-                <div></div>
-              }
-
-              </GoogleMapReact>
-            </div>
-          </div>
-          :
-          <div></div>
-          }
           <br/>
+          <div style={{ height: '60vh', width: '80vw'}}>
+            <GoogleMapReact
+              bootstrapURLKeys={{ key: 'AIzaSyDcMQLOO-WbqT-IopP9CmBzkmCBzoG67fQ' }}
+              defaultCenter={this.state.defaultCenter}
+              defaultZoom={this.state.zoom}
+              options={this.getMapOptions}
+              onClick={e => this.mapClicked(e)}
+            >
+              {/* <Marker
+              text={"Current location"}
+              lat={this.state.currentLocation.lat}
+              lng={this.state.currentLocation.lng}
+              /> */}
+            {this.state.actualLocation !== null ?
+              <Marker
+              text={"Selected location"}
+              lat={this.state.actualLocation.lat}
+              lng={this.state.actualLocation.lng}
+              />
+            :
+              <div></div>
+            }
+
+            </GoogleMapReact>
+          </div>
         </header>
       </div>
     );
