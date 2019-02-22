@@ -15,6 +15,10 @@ const ALGOLIA_INDEX_NAME = 'bricks';
 var client = algoliasearch(ALGOLIA_ID, ALGOLIA_SEARCH_KEY, { protocol: 'https:' });
 var index = client.initIndex(ALGOLIA_INDEX_NAME)
 
+var adminClient = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY, { protocol: 'https:' });
+var adminIndex = adminClient.initIndex(ALGOLIA_INDEX_NAME)
+
+
 class App extends Component {
   constructor() {
     super();
@@ -22,12 +26,13 @@ class App extends Component {
       currentLocation: null,
       actualLocation: null,
       submitted: false,
-      zoom: 25,
+      zoom: 30,
       inscription: '',
       results: [],
       selectedBrick: null,
       pleaseSelectBrick: false,
       pleaseSelectLocation: false,
+      // Phipps Garden Coordinates
       defaultCenter: {
         lat: 40.43920267930719,
         lng: -79.9481821247
@@ -54,6 +59,7 @@ class App extends Component {
         <li key={i} style={{background: 'white', color: 'black'}}onClick={e => this.setBrick(e, this.state.results[i])}>
           <div>Inscription: {this.state.results[i].Inscription}</div>
           <div>Section: {this.state.results[i].Section}</div>
+          <div>Location in DB: {this.state.results[i].hasOwnProperty("lat") ? "Yes" : "No"} </div>
         </li>
       )
     }
@@ -64,7 +70,7 @@ class App extends Component {
         <header className="App-header" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
           <img src={img} style={{width: '10%', height: '10%', marginTop: '20px', marginBottom: '20px'}} className="App-logo" alt="logo" />
           <br/>
-          <input type="text" value={this.state.inscription} onChange={e => setTimeout(this.handleChange(e), 1000)}></input>
+          <textarea type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => setTimeout(this.handleChange(e), 1000)}></textarea>
           <ul style={{listStyle: 'none', paddingLeft: '0'}}>
             {resultList}
           </ul>
@@ -124,7 +130,13 @@ class App extends Component {
     this.setState({
       selectedBrick: result,
       inscription: result.Inscription,
-      results: []
+      results: [],
+      actualLocation: {
+        lat: result.lat,
+        lng: result.lng,
+        timeUpdated: result.timeUpdated
+      }
+      
     })
   }
 
@@ -190,8 +202,12 @@ class App extends Component {
     let ID = this.state.selectedBrick.objectID
     e.preventDefault();
     let that = this;
+    var date = new Date();
+    let brickObject = this.state.selectedBrick;
+    brickObject.lat = this.state.actualLocation.lat;
+    brickObject.long = this.state.actualLocation.lng;
+    brickObject.timeUpdated = date.toLocaleTimeString();
     if (this.state.currentLocation !== null) {
-      var date = new Date();
       let db = fire.firestore();
       db.collection("csv").doc(ID).update({
         lat: that.state.actualLocation.lat,
@@ -205,7 +221,18 @@ class App extends Component {
             pleaseSelectBrick: false,
             pleaseSelectLocation: false,
             selectedBrick: null
+          }, () => 
+          adminIndex.partialUpdateObject({
+            lat: that.state.actualLocation.lat,
+            lng: that.state.actualLocation.lng,
+            timeUpdated: date.toLocaleTimeString(),
+            objectID: brickObject.objectID
+          }, function(err, content) {
+            if (err) throw err;
+          
+            console.log(content);
           })
+        )
           // window.location.reload();
       })
       .catch(function(error) {
@@ -259,7 +286,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    let db = fire.firestore();
     if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(pos => {
         const coords = pos.coords;
@@ -311,7 +337,7 @@ class App extends Component {
     let results = [];
     db.collection('csv').
       // .orderBy("Inscription", 'asc')
-      where('Inscription', '==', this.state.inscription).
+      where('Inscription', '==', that.state.inscription).
       // .startAt(that.state.inscription.toLowerCase())
       // .endAt(that.state.inscription.toLowerCase()+"\uf8ff")
       // limit(10).
