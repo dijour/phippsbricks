@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import '../../App.css';
 import fire from '../../fire.js';
-import img from '../../phipps.jpg';
+import img from '../../logo_512x512.png';
 import GoogleMapReact from 'google-map-react';
 import Marker from '../../components/map/marker.js'
 import * as algoliasearch from 'algoliasearch'
