@@ -217,7 +217,7 @@ class Admin extends Component {
         lat: that.state.actualLocation.lat,
         lng: that.state.actualLocation.lng,
         timeUpdated: date.toLocaleTimeString(),
-        updatedBy: this.props.user.email
+        updatedBy: that.props.user.email
       })
       .then(function() {
           console.log("Document successfully updated!")
@@ -232,7 +232,7 @@ class Admin extends Component {
             lng: that.state.actualLocation.lng,
             timeUpdated: date.toLocaleTimeString(),
             objectID: brickObject.objectID,
-            updatedBy: this.props.user.email
+            updatedBy: that.props.user.email
           }, function(err, content) {
             if (err) throw err;
           

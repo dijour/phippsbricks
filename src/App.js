@@ -20,34 +20,17 @@ class App extends Component {
       <div>
         <Router>
           <div className="App">
-          {/* <Navigation user={this.state.user} login={this.login} logout={this.logout}/> */}
           {this.state.user === null ? 
           <Route path="/" exact strict render={this.visitorPage}/>
           :
           <Route path="/" exact strict render={this.adminPage}/>
           }
           <Route path="/manager" exact strict render={this.managerPage}/>
-          {/* <Route path="/book" exact strict render={ this.meetingPage } />
-          <Route path="/admins" exact strict render={ this.adminsPage} />
-          <Route path="/contacts" exact strict render={ this.contactsPage } />
-          <Route path="/places" exact strict render={ this.placesPage } />
-          <Route path="/admins/edit/:id" exact strict component={ Edit } />
-          <Route path="/book/edit/:id" exact strict component={ Edit } />
-          <Route path="/contacts/edit/:id" exact strict component={ Edit } />
-          <Route path="/places/edit/:id" exact strict component={ Edit } />
-          <Route path="/itineraries/edit/:id" exact strict component={ Edit } /> */}
           </div>
         </Router>
       </div>
     );
   }
-
-  // homePage = (props) => {
-  //   return (
-  //     <Visitor
-  //     user={this.state.user} /> 
-  //   );
-  // }
 
   adminPage = (props) => {
     return (
@@ -92,7 +75,6 @@ class App extends Component {
         const user = result.user;
         console.log(user)
         console.log("we may be logging in")
-        console.log(user.email)
         const email = user.email.toString();
         // if (email.match(/@phippsconservatory.org/) === null){
         //   console.log("thou shall not pass");
