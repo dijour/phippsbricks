@@ -39,7 +39,7 @@ class Admin extends Component {
     }
   }
 
-  render() {
+  render = () => {
     let newList = []
     for (let i in this.state.locations) {
       console.log(this.state.locations[i])
@@ -68,7 +68,7 @@ class Admin extends Component {
       <div className="App">
         <header className="App-header" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
           <img src={img} style={{width: '10%', height: '10%', marginTop: '20px', marginBottom: '20px'}} className="App-logo" alt="logo" />
-          <br/>
+          <h3>Hello, {this.props.user.displayName}</h3>
           <button onClick={e => this.props.logout(e)} style={{color: 'black', borderBottomColor: 'white'}}>Logout</button>
           <br/>
           <br/>
@@ -87,31 +87,30 @@ class Admin extends Component {
             <div></div>
           }
           <br/>
-          <div style={{ height: '60vh', width: '80vw'}}>
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: 'AIzaSyDcMQLOO-WbqT-IopP9CmBzkmCBzoG67fQ' }}
-              defaultCenter={this.state.defaultCenter}
-              defaultZoom={this.state.zoom}
-              options={this.getMapOptions}
-              onClick={e => this.mapClicked(e)}
-            >
-              {/* <Marker
-              text={"Current location"}
-              lat={this.state.currentLocation.lat}
-              lng={this.state.currentLocation.lng}
-              /> */}
-            {this.state.actualLocation !== null ?
-              <Marker
-              text={"Selected location"}
-              lat={this.state.actualLocation.lat}
-              lng={this.state.actualLocation.lng}
-              />
-            :
-              <div></div>
-            }
-
-            </GoogleMapReact>
-          </div>
+            <div style={{ height: '60vh', width: '80vw'}}>
+                <GoogleMapReact
+                    bootstrapURLKeys={{ key: 'AIzaSyDcMQLOO-WbqT-IopP9CmBzkmCBzoG67fQ' }}
+                    center={this.state.defaultCenter}
+                    defaultZoom={this.state.zoom}
+                    options={this.getMapOptions}
+                    onClick={e => this.mapClicked(e)}
+                    >
+                    {/* <Marker
+                    text={"Current location"}
+                    lat={this.state.currentLocation.lat}
+                    lng={this.state.currentLocation.lng}
+                    /> */}
+                    {this.state.actualLocation !== null ?
+                    <Marker
+                    text={"Selected location"}
+                    lat={this.state.actualLocation.lat}
+                    lng={this.state.actualLocation.lng}
+                    />
+                    :
+                    <div></div>
+                    }
+                </GoogleMapReact>
+            </div>
         </header>
       </div>
     );
@@ -137,9 +136,12 @@ class Admin extends Component {
         lat: result.lat,
         lng: result.lng,
         timeUpdated: result.timeUpdated
-      }
-      
-    })
+      },
+      defaultCenter: {
+        lat: result.lat,
+        lng: result.lng
+      }      
+    }, () => {this.render()})
   }
 
   updateSearchResults = () => {
@@ -214,7 +216,8 @@ class Admin extends Component {
       db.collection("csv").doc(ID).update({
         lat: that.state.actualLocation.lat,
         lng: that.state.actualLocation.lng,
-        timeUpdated: date.toLocaleTimeString()
+        timeUpdated: date.toLocaleTimeString(),
+        updatedBy: this.props.user.email
       })
       .then(function() {
           console.log("Document successfully updated!")
@@ -228,7 +231,8 @@ class Admin extends Component {
             lat: that.state.actualLocation.lat,
             lng: that.state.actualLocation.lng,
             timeUpdated: date.toLocaleTimeString(),
-            objectID: brickObject.objectID
+            objectID: brickObject.objectID,
+            updatedBy: this.props.user.email
           }, function(err, content) {
             if (err) throw err;
           

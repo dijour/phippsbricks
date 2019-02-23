@@ -74,24 +74,30 @@ class Visitor extends Component {
           </ul>
           <div>{this.state.selectedBrick !== null ? "Brick Selected!" : ""}</div>
           <br/>
-          <br/>
+          <br/> 
           <div style={{ height: '60vh', width: '80vw'}}>
-            <GoogleMapReact
-              bootstrapURLKeys={{ key: 'AIzaSyDcMQLOO-WbqT-IopP9CmBzkmCBzoG67fQ' }}
-              defaultCenter={this.state.defaultCenter}
-              defaultZoom={this.state.zoom}
-              options={this.getMapOptions}
-            >
-            {this.state.actualLocation !== null ?
-              <Marker
-              text={"Selected location"}
-              lat={this.state.actualLocation.lat}
-              lng={this.state.actualLocation.lng}
-              />
-            :
-              <div></div>
-            }
-            </GoogleMapReact>
+              <GoogleMapReact
+                  bootstrapURLKeys={{ key: 'AIzaSyDcMQLOO-WbqT-IopP9CmBzkmCBzoG67fQ' }}
+                  center={this.state.defaultCenter}
+                  defaultZoom={this.state.zoom}
+                  options={this.getMapOptions}
+                  onClick={e => this.mapClicked(e)}
+                  >
+                  {/* <Marker
+                  text={"Current location"}
+                  lat={this.state.currentLocation.lat}
+                  lng={this.state.currentLocation.lng}
+                  /> */}
+                  {this.state.actualLocation !== null ?
+                  <Marker
+                  text={"Selected location"}
+                  lat={this.state.actualLocation.lat}
+                  lng={this.state.actualLocation.lng}
+                  />
+                  :
+                  <div></div>
+                  }
+              </GoogleMapReact>
           </div>
         </header>
       </div>
@@ -118,9 +124,12 @@ class Visitor extends Component {
         lat: result.lat,
         lng: result.lng,
         timeUpdated: result.timeUpdated
-      }
-      
-    })
+      },
+      defaultCenter: {
+        lat: result.lat,
+        lng: result.lng
+      }      
+    }, () => {this.render()})
   }
 
   updateSearchResults = () => {

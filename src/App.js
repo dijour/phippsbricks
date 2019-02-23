@@ -90,6 +90,7 @@ class App extends Component {
     auth.signInWithPopup(provider) 
       .then((result) => {
         const user = result.user;
+        console.log(user)
         console.log("we may be logging in")
         console.log(user.email)
         const email = user.email.toString();
