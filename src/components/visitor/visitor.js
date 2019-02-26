@@ -134,7 +134,7 @@ class Visitor extends Component {
         lat: result.lat,
         lng: result.lng
       }      
-    }, () => {this.render()})
+    })
   }
 
   // query the Algolia "bricks" index and extract the first 5 results
