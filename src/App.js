@@ -18,8 +18,10 @@ class App extends Component {
   render() {
     return (
       <div>
+        {/* This is a router component from React-Router to instantiate the various paths the site has. */}
         <Router>
           <div className="App">
+          {/* If a user is not logged in (user === null) then just render the visitor page. */}
           {this.state.user === null ? 
           <Route path="/" exact strict render={this.visitorPage}/>
           :
@@ -32,6 +34,8 @@ class App extends Component {
     );
   }
 
+  // We could just make the route render the standard Admin component, but we want a little more specificity
+  // We're going to create an "adminPage" which renders the Admin component, but additionally feeds in props
   adminPage = (props) => {
     return (
       <Admin
@@ -41,6 +45,8 @@ class App extends Component {
     );
   }
 
+  // We could just make the route render the standard Visitor component, but we want a little more specificity
+  // We're going to create an "adminPage" which renders the Visitor component, but additionally feeds in props
   visitorPage = (props) => {
     return (
       <Visitor
@@ -50,6 +56,7 @@ class App extends Component {
     );
   }
 
+  //Before the page renders, make sure we update the app's state with the user object, so it persists even when pages reload
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
@@ -58,6 +65,7 @@ class App extends Component {
     });
   }
 
+  //Default Firebase logout function 
   logout = (e) => {
     e.preventDefault();
     auth.signOut()
@@ -68,6 +76,7 @@ class App extends Component {
       });
   }
 
+  //Default Firebase login function
   login = (e) => {
     e.preventDefault();
     auth.signInWithPopup(provider) 

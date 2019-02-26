@@ -6,14 +6,17 @@ import GoogleMapReact from 'google-map-react';
 import Marker from '../../components/map/marker.js'
 import * as algoliasearch from 'algoliasearch'
 
+//constants to access our Algolia index
 const ALGOLIA_ID = '0YB48ZSNOY';
 const ALGOLIA_ADMIN_KEY = '29d14e5aa9ef6cc0eca30180790e6e08';
 const ALGOLIA_SEARCH_KEY = '89d36e2116be0b0797033a466abe93b3';
 
+//reference to the specific Algolia "bricks" index
 const ALGOLIA_INDEX_NAME = 'bricks';
 var client = algoliasearch(ALGOLIA_ID, ALGOLIA_SEARCH_KEY, { protocol: 'https:' });
 var index = client.initIndex(ALGOLIA_INDEX_NAME)
 
+//admin keys to write to the Algolia database
 var adminClient = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY, { protocol: 'https:' });
 var adminIndex = adminClient.initIndex(ALGOLIA_INDEX_NAME)
 
@@ -22,16 +25,21 @@ class Admin extends Component {
   constructor() {
     super();
     this.state = {
+      // Current location: the device's location
       currentLocation: null,
+      // Actual location: the user selected location on the map component
       actualLocation: null,
       submitted: false,
+      //default zoom for Google Maps component
       zoom: 30,
       inscription: '',
       results: [],
       selectedBrick: null,
+      //Flag for telling the user they need to select a brick before updating the database
       pleaseSelectBrick: false,
+      //Flag for telling the user they need to select a location before updating the database
       pleaseSelectLocation: false,
-      // Phipps Garden Coordinates
+      // Phipps Garden Coordinates are pre-populated
       defaultCenter: {
         lat: 40.43920267930719,
         lng: -79.9481821247
@@ -40,18 +48,7 @@ class Admin extends Component {
   }
 
   render = () => {
-    let newList = []
-    for (let i in this.state.locations) {
-      console.log(this.state.locations[i])
-      newList.push(
-        <div key={i}>
-        <li>Latitude: {this.state.locations[i].lat}</li>
-        <li>Longitude: {this.state.locations[i].lng}</li>
-        <li>Time: {this.state.locations[i].time}</li>
-        <br/>
-        </div>
-      )
-    }
+    //create a list of li elements under the search bar, one li for every query result 
     let resultList = []
     for (let i in this.state.results) {
       resultList.push(
@@ -62,31 +59,37 @@ class Admin extends Component {
         </li>
       )
     }
-    console.log(resultList)
-    console.log(this.state)
+    // this is what the render function will actually show on the page
     return (
       <div className="App">
         <header className="App-header" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+          {/* Loads the Phipps Logo */}
           <img src={img} style={{width: '10%', height: '10%', marginTop: '20px', marginBottom: '20px'}} className="App-logo" alt="logo" />
+          
           <h3>Hello, {this.props.user.displayName}</h3>
+          {/* Button to logout */}
           <button onClick={e => this.props.logout(e)} style={{color: 'black', borderBottomColor: 'white'}}>Logout</button>
           <br/>
           <br/>
+          {/* Load the search bar with the results list under it */}
           <textarea type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => setTimeout(this.handleChange(e), 1000)}></textarea>
           <ul style={{listStyle: 'none', paddingLeft: '0'}}>
             {resultList}
           </ul>
+          {/* All possible alerts will appear below if their flags are triggered */}
           <div>{this.state.pleaseSelectBrick === true ? "Please choose a brick from the database first!" : ""}</div>
           <div>{this.state.pleaseSelectLocation === true ? "Please drop a pin on the map to update the brick location!" : ""}</div>
           <div>{this.state.selectedBrick !== null ? "Brick Selected!" : ""}</div>
           <div>{this.state.submitted ? "Updated Location in Database!" : ""}</div>
           <br/>
+          {/* If a brick has been selected, then a button to update its location in the database will appear*/}
           {this.state.selectedResult !== null ?
             <button onClick={e => this.pushBrickLocation(e)} style={{color: 'black', borderBottomColor: 'white'}}>Update Brick Location in Database</button>
             :
             <div></div>
           }
           <br/>
+          {/* The entire google map component. Most of this is default code */}
             <div style={{ height: '60vh', width: '80vw'}}>
                 <GoogleMapReact
                     bootstrapURLKeys={{ key: 'AIzaSyDcMQLOO-WbqT-IopP9CmBzkmCBzoG67fQ' }}
@@ -95,11 +98,6 @@ class Admin extends Component {
                     options={this.getMapOptions}
                     onClick={e => this.mapClicked(e)}
                     >
-                    {/* <Marker
-                    text={"Current location"}
-                    lat={this.state.currentLocation.lat}
-                    lng={this.state.currentLocation.lng}
-                    /> */}
                     {this.state.actualLocation !== null ?
                     <Marker
                     text={"Selected location"}
@@ -116,16 +114,21 @@ class Admin extends Component {
     );
   }
 
+  // anytime the text area changes, update the state of this component to reflect the text in there 
   handleChange = (e) => {
     e.preventDefault();
     this.setState({
       inscription: e.target.value,
       submitted: false
     }
+    // re-query the database with the next string in the text area
       ,() => this.updateSearchResults()
       );
   }
 
+  // whatever brick is selected, update the state of this component to reflect its properties
+  // if the brick has a location in the database, it will update the actualLocation of this state
+  // and will re-center the map based on that location
   setBrick = (e, result) => {
     e.preventDefault();
     this.setState({
@@ -141,9 +144,10 @@ class Admin extends Component {
         lat: result.lat,
         lng: result.lng
       }      
-    }, () => {this.render()})
+    })
   }
 
+  // query the Algolia "bricks" index and extract the first 5 results
   updateSearchResults = () => {
     index.search({
       query: this.state.inscription
@@ -155,6 +159,7 @@ class Admin extends Component {
     })
   }
 
+  // anytime the map is clicked, update the state to reflect the location of the marker
   mapClicked = (e) => {
     console.log('invoked')
     this.setState({
@@ -169,8 +174,8 @@ class Admin extends Component {
     return x * Math.PI / 180;
   }
   
+  // Haversine formula to calculate distance between 2 GPS points
   getDistance = (p1, p2) => {
-    console.log("i have been summoned")
     var R = 6378137; // Earth’s mean radius in meter
     var dLat = this.rad(p2.lat - p1.lat);
     var dLong = this.rad(p2.lng - p1.lng);
@@ -182,7 +187,9 @@ class Admin extends Component {
     return d; // returns the distance in meter
   }
 
+  // function will not run if any flags are triggered (missing location, brick, or both)
   pushBrickLocation = (e) => {
+    console.log(this.props.user)
     if (this.state.actualLocation === null && this.state.actualLocation === null) {
       return this.setState({
         pleaseSelectLocation: true,
@@ -203,6 +210,7 @@ class Admin extends Component {
     }
 
     console.log(this.state.selectedBrick.objectID)
+    // push everything from this state to the Firestore database
     let ID = this.state.selectedBrick.objectID
     e.preventDefault();
     let that = this;
@@ -219,6 +227,7 @@ class Admin extends Component {
         timeUpdated: date.toLocaleTimeString(),
         updatedBy: that.props.user.email
       })
+      // update Algolia to reflect this change
       .then(function() {
           console.log("Document successfully updated!")
           that.setState({
@@ -247,7 +256,7 @@ class Admin extends Component {
     }
   }
 
-  
+  // not using this at the moment
   pushCurrentSelectedLocation = (e) => {
     e.preventDefault();
     let that = this;
@@ -272,6 +281,7 @@ class Admin extends Component {
     }
   }
 
+  // currently just populating the database with where people are accessing the device from
   pushAutoLoggedLocation = () => {
     let that = this;
     if (this.state.currentLocation !== null) {
@@ -291,6 +301,8 @@ class Admin extends Component {
     }
   }
 
+  // Before anything renders, find the current location from the browser,
+  // then push that location to Firestore automatically
   componentDidMount() {
     if (navigator && navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(pos => {
@@ -305,6 +317,7 @@ class Admin extends Component {
     }
   }
 
+  // sets up the Google map component with necessary properties
   getMapOptions = (maps: Maps) => {
     return {
         streetViewControl: false,
@@ -337,6 +350,7 @@ class Admin extends Component {
     };
 }
 
+// not using this, ignore for now
   getResultsFromFirestore = () => {
     let db = fire.firestore();
     let that = this;
@@ -371,6 +385,7 @@ class Admin extends Component {
     // }
   }
 
+  // not using this, ignore for now
   sendDBtoAlgolia = () => {
     let db = fire.firestore();
     var wholeData = [];
