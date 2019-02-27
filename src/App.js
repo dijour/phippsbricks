@@ -3,6 +3,7 @@ import './App.css';
 import {auth, provider} from './fire.js';
 import Admin from './components/admin/admin.js';
 import Visitor from './components/visitor/visitor.js';
+import Login from './components/login/login.js';
 import {BrowserRouter as Router} from 'react-router-dom';
 import Route from 'react-router-dom/Route';
 
@@ -27,7 +28,7 @@ class App extends Component {
           :
           <Route path="/" exact strict render={this.adminPage}/>
           }
-          <Route path="/manager" exact strict render={this.managerPage}/>
+          <Route path="/login" exact strict render={this.loginPage}/>
           </div>
         </Router>
       </div>
@@ -50,6 +51,17 @@ class App extends Component {
   visitorPage = (props) => {
     return (
       <Visitor
+      user={this.state.user} 
+      login={this.login}
+      logout={this.logout}/> 
+    );
+  }
+
+  // We could just make the route render the standard login component, but we want a little more specificity
+  // We're going to create an "loginPage" which renders the Login component, but additionally has a Login function passed to it from the main App
+  loginPage = (props) => {
+    return (
+      <Login
       user={this.state.user} 
       login={this.login}
       logout={this.logout}/> 
@@ -82,9 +94,6 @@ class App extends Component {
     auth.signInWithPopup(provider) 
       .then((result) => {
         const user = result.user;
-        console.log(user)
-        console.log("we may be logging in")
-        const email = user.email.toString();
         // if (email.match(/@phippsconservatory.org/) === null){
         //   console.log("thou shall not pass");
         //   this.logout();

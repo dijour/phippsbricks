@@ -61,8 +61,6 @@ class Visitor extends Component {
           {/* Loads the Phipps Logo */}
           <img src={img} style={{width: '10%', height: '10%', marginTop: '20px', marginBottom: '20px'}} className="App-logo" alt="logo" />
           <br/>
-          {/* Button to login */}
-          <button onClick={e => this.props.login(e)} style={{color: 'black', borderBottomColor: 'white'}}>Login</button>
           <br/>
           <br/>
           {/* Load the search bar with the results list under it */}

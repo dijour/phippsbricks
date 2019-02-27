@@ -355,13 +355,7 @@ class Admin extends Component {
     let db = fire.firestore();
     let that = this;
     let results = [];
-    db.collection('csv').
-      // .orderBy("Inscription", 'asc')
-      where('Inscription', '==', that.state.inscription).
-      // .startAt(that.state.inscription.toLowerCase())
-      // .endAt(that.state.inscription.toLowerCase()+"\uf8ff")
-      // limit(10).
-      get().then(snapshot => {
+    db.collection('csv').where('Inscription', '==', that.state.inscription).get().then(snapshot => {
         snapshot.forEach(doc => {
           let docCopy = doc.data();
           // console.log(docCopy)
@@ -377,7 +371,7 @@ class Admin extends Component {
     //   ONE TIME FUNCTION, ONLY EVER USE ONCE TO 
     // COMPLETELY UPLOAD ALL BRICKS TO FIRESTORE
   uploadAllBricksToDB = () => {
-    let db = fire.firestore();
+    // let db = fire.firestore();
     // for (let i in bricks) {
     //   db.collection('csv').add(bricks[i]).then(ref => {
     //     console.log('Added document with ID: ', ref.id);
