@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../../App.css';
 import './login.css';
 import fire from '../../fire.js';
+import img from '../../logo_512x512.png';
 import { Redirect } from 'react-router-dom';
 
 export class Login extends Component {
@@ -22,6 +23,8 @@ export class Login extends Component {
       }
       return (
         <div className="login">
+            <img src={img} style={{width: '10%', height: '10%', marginTop: '20px', marginBottom: '20px'}} className="App-logo" alt="logo" />
+            <br/>
             <form onSubmit={this.login}>
                 {this.state.found === true ?
                 <h1>  </h1>
@@ -29,11 +32,12 @@ export class Login extends Component {
                 :
                 <h1> Could not find an account with that email/password.</h1>
                 }
-                <label>Email:</label>
+                <h3>Email:</h3>
                 <input type="text" name="email" autoComplete="email" value={this.state.email} onChange={this.handleChange}/>
-                <label>Password:</label>
+                <br/>
+                <h3>Password:</h3>
                 <input type="password" name="password" autoComplete="password" value={this.state.password} onChange={this.handleChange}/>
-                <br />
+                <br/><br/>
                 <button className="button-primary" type="submit" onClick={this.login}>Phipps Log In</button>
             </form>            
         </div>
@@ -49,7 +53,9 @@ export class Login extends Component {
         // , () => (console.log(this.state))
         )
       }).catch((error) => {
-          // console.log(error);
+          this.setState({
+              found: false
+          })
         });
     }
 
