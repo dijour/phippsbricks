@@ -33,12 +33,12 @@ export class Login extends Component {
                 <h1> Could not find an account with that email/password.</h1>
                 }
                 <h3>Email:</h3>
-                <input type="text" name="email" autoComplete="email" value={this.state.email} onChange={this.handleChange}/>
+                <input style={{float: 'none'}} type="text" name="email" autoComplete="email" value={this.state.email} onChange={this.handleChange}/>
                 <br/>
                 <h3>Password:</h3>
-                <input type="password" name="password" autoComplete="password" value={this.state.password} onChange={this.handleChange}/>
+                <input style={{float: 'none'}} type="password" name="password" autoComplete="password" value={this.state.password} onChange={this.handleChange}/>
                 <br/><br/>
-                <button className="button-primary" type="submit" onClick={this.login}>Phipps Log In</button>
+                <button type="submit" onClick={this.login}>Phipps Log In</button>
             </form>            
         </div>
       );

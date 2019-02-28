@@ -232,20 +232,20 @@ class Visitor extends Component {
         gestureHandling: "greedy",
         disableDoubleClickZoom: true,
 
-        mapTypeControl: true,
+        // mapTypeControl: true,
         mapTypeId: maps.MapTypeId.SATELLITE,
-        mapTypeControlOptions: {
-            style: maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: maps.ControlPosition.BOTTOM_CENTER,
-            mapTypeIds: [
-                maps.MapTypeId.ROADMAP,
-                maps.MapTypeId.SATELLITE,
-                maps.MapTypeId.HYBRID
-            ]
-        },
+        // mapTypeControlOptions: {
+        //     style: maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        //     position: maps.ControlPosition.BOTTOM_CENTER,
+        //     mapTypeIds: [
+        //         maps.MapTypeId.ROADMAP,
+        //         maps.MapTypeId.SATELLITE,
+        //         maps.MapTypeId.HYBRID
+        //     ]
+        // },
 
-        zoomControl: true,
-        clickableIcons: false
+        // zoomControl: true,
+        // clickableIcons: true
     };
 }
 

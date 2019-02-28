@@ -85,24 +85,9 @@ class Admin extends Component {
           <br/>
           {/* Load the search bar with the results list under it */}
           {this.state.adding ? 
-          <div style={{float: 'left', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-            <form>
-              <input type="text" placeholder="Type a brick inscription..." name="inscription" value={this.state.newBrick.inscription} onChange={e => this.handleTextChange(e)} required></input>
-              <br/>
-              <input type="text" placeholder="Type a donor last name" name="donorLastName" value={this.state.newBrick.donorLastName} onChange={e => this.handleTextChange(e)} required></input>
-              <br/>
-              <input type="text" placeholder="Type a donor full name" name="donorName" value={this.state.newBrick.donorName} onChange={e => this.handleTextChange(e)} required></input>
-              <br/>
-              <input type="text" placeholder="Type a Keyword or last name" name="inscribedLastNameOrOtherKeyword" value={this.state.newBrick.inscribedLastNameOrOtherKeyword} onChange={e => this.handleTextChange(e)} required></input>
-              <br/>
-              <input type="text" placeholder="Type a section" name="section" value={this.state.newBrick.section} onChange={e => this.handleTextChange(e)} required></input>
-              <br/>
-              <button className="clear" style={{float:'none', display: 'static'}} onClick={e => this.clearInscription(e)}>Clear</button>
-            </form>
-            <button onClick={e => this.pushNewBrickLocation(e)}>Add New Brick to Database</button>
-          </div>
+            <div></div>
           :
-          <div style={{float: 'left', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+            <div style={{float: 'left', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
               {this.state.selectedBrick !== null ?
               <div>
                 {this.state.brickLocation.lat !== undefined ?
@@ -121,7 +106,7 @@ class Admin extends Component {
             <ul style={{listStyle: 'none', paddingLeft: '0'}}>
               {resultList}
             </ul>
-          </div>
+            </div>
           
           }
 
@@ -185,7 +170,29 @@ class Admin extends Component {
             </div>
             <br/>
             <h3>Brick not showing up? Add to the database:</h3>
-            <button onClick={e => this.addingBrick(e)} >Add New Brick</button>
+            <button onClick={e => this.addingBrick(e)}>{this.state.adding? "Cancel" : "Add New Brick"}</button>
+            <br/>
+            {this.state.adding ? 
+              <div style={{float: 'left', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                <form>
+                  <input type="text" placeholder="Brick inscription..." name="inscription" value={this.state.newBrick.inscription} onChange={e => this.handleTextChange(e)} required></input>
+                  <br/>
+                  <input type="text" placeholder="Donor last name" name="donorLastName" value={this.state.newBrick.donorLastName} onChange={e => this.handleTextChange(e)} required></input>
+                  <br/>
+                  <input type="text" placeholder="Donor full name" name="donorName" value={this.state.newBrick.donorName} onChange={e => this.handleTextChange(e)} required></input>
+                  <br/>
+                  <input type="text" placeholder="Keyword or last name" name="inscribedLastNameOrOtherKeyword" value={this.state.newBrick.inscribedLastNameOrOtherKeyword} onChange={e => this.handleTextChange(e)} required></input>
+                  <br/>
+                  <input type="text" placeholder="Section" name="section" value={this.state.newBrick.section} onChange={e => this.handleTextChange(e)} required></input>
+                  <br/>
+                  <button className="clear" style={{float:'none', display: 'static'}} onClick={e => this.clearInscription(e)}>Clear</button>
+                </form>
+                <br/>
+                <button onClick={e => this.pushNewBrickLocation(e)}>Add New Brick to Database</button>
+              </div>
+            :
+              <div></div>
+            }
         </header>
       </div>
     );
@@ -517,20 +524,20 @@ class Admin extends Component {
         gestureHandling: "greedy",
         disableDoubleClickZoom: true,
 
-        mapTypeControl: true,
+        // mapTypeControl: true,
         mapTypeId: maps.MapTypeId.SATELLITE,
-        mapTypeControlOptions: {
-            style: maps.MapTypeControlStyle.HORIZONTAL_BAR,
-            position: maps.ControlPosition.BOTTOM_CENTER,
-            mapTypeIds: [
-                maps.MapTypeId.ROADMAP,
-                maps.MapTypeId.SATELLITE,
-                maps.MapTypeId.HYBRID
-            ]
-        },
+        // mapTypeControlOptions: {
+        //     style: maps.MapTypeControlStyle.HORIZONTAL_BAR,
+        //     position: maps.ControlPosition.BOTTOM_CENTER,
+        //     mapTypeIds: [
+        //         maps.MapTypeId.ROADMAP,
+        //         maps.MapTypeId.SATELLITE,
+        //         maps.MapTypeId.HYBRID
+        //     ]
+        // },
 
-        zoomControl: true,
-        clickableIcons: true
+        // zoomControl: true,
+        // clickableIcons: true
     };
 }
 
