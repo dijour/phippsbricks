@@ -90,7 +90,7 @@ class Admin extends Component {
             <div style={{float: 'left', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
               {this.state.selectedBrick !== null ?
               <div>
-                {this.state.brickLocation.lat !== undefined ?
+                {this.state.selectedBrick.lat !== undefined ?
                 <img src={check} style={{width: '30px', height: '30px'}}></img>
                 :
                 <img src={missing} style={{width: '30px', height: '30px'}}></img>
@@ -226,7 +226,8 @@ class Admin extends Component {
     e.preventDefault();
     this.setState({
       inscription: e.target.value,
-      submitted: false
+      submitted: false,
+      brickLocation: null
     }
     // re-query the database with the next string in the text area
       ,() => this.updateSearchResults()
