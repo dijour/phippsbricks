@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import brick from './brick.png'
 
-
-// let color = props.color;
 
 const Wrapper = styled.div`
   position: absolute;
@@ -22,20 +21,21 @@ const Wrapper = styled.div`
   }
 `;
 
-const Marker = props => (
-  <Wrapper
-    alt={props.text}
-    {...props.onClick ? { onClick: props.onClick } : {}}
-  />
+const Brick = props => (
+    <img src={brick} style={{position: 'absolute',  userSelect: 'none', width: '20px', height: '20px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}></img> 
+//   <Wrapper
+//     alt={props.text}
+//     {...props.onClick ? { onClick: props.onClick } : {}}
+//   />
 );
 
-Marker.defaultProps = {
+Brick.defaultProps = {
   onClick: null,
 };
 
-Marker.propTypes = {
+Brick.propTypes = {
   onClick: PropTypes.func,
   text: PropTypes.string.isRequired,
 };
 
-export default Marker;
+export default Brick;

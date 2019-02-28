@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import person from './person.png'
 
-
-// let color = props.color;
 
 const Wrapper = styled.div`
   position: absolute;
@@ -22,20 +21,21 @@ const Wrapper = styled.div`
   }
 `;
 
-const Marker = props => (
-  <Wrapper
-    alt={props.text}
-    {...props.onClick ? { onClick: props.onClick } : {}}
-  />
+const Person = props => (
+    <img src={person} style={{position: 'absolute',  userSelect: 'none', width: '25px', height: '25px', top: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}></img> 
+//   <Wrapper
+//     alt={props.text}
+//     {...props.onClick ? { onClick: props.onClick } : {}}
+//   />
 );
 
-Marker.defaultProps = {
+Person.defaultProps = {
   onClick: null,
 };
 
-Marker.propTypes = {
+Person.propTypes = {
   onClick: PropTypes.func,
   text: PropTypes.string.isRequired,
 };
 
-export default Marker;
+export default Person;

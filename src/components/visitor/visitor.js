@@ -4,7 +4,9 @@ import '../../App.css';
 import fire from '../../fire.js';
 import img from '../../logo_512x512.png';
 import GoogleMapReact from 'google-map-react';
-import Marker from '../../components/map/marker.js'
+import Marker from '../../components/map/marker.js';
+import Brick from '../../components/map/brick.js';
+import Person from '../../components/map/person.js';
 import * as algoliasearch from 'algoliasearch'
 
 //constants to access our Algolia index
@@ -48,8 +50,8 @@ class Visitor extends Component {
     for (let i in this.state.results) {
       resultList.push(
         <li key={i} style={{background: 'white', color: 'black'}}onClick={e => this.setBrick(e, this.state.results[i])}>
-          <div>Inscription: {this.state.results[i].Inscription}</div>
-          <div>Section: {this.state.results[i].Section}</div>
+          <div>Inscription: {this.state.results[i].inscription}</div>
+          <div>Section: {this.state.results[i].section}</div>
           <div>Location in DB: {this.state.results[i].hasOwnProperty("lat") ? "Yes" : "No"} </div>
         </li>
       )
@@ -64,7 +66,8 @@ class Visitor extends Component {
           <br/>
           <br/>
           {/* Load the search bar with the results list under it */}
-          <textarea type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => setTimeout(this.handleChange(e), 1000)}></textarea>
+          <input type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => setTimeout(this.handleChange(e), 1000)}></input>
+          <button className="clear" onClick={e => this.clearInscription(e)}>Clear</button>
           <ul style={{listStyle: 'none', paddingLeft: '0'}}>
             {resultList}
           </ul>
@@ -79,21 +82,24 @@ class Visitor extends Component {
                   center={this.state.defaultCenter}
                   defaultZoom={this.state.zoom}
                   options={this.getMapOptions}
-                  onClick={e => this.mapClicked(e)}
                   >
-                  {/* <Marker
-                  text={"Current location"}
-                  lat={this.state.currentLocation.lat}
-                  lng={this.state.currentLocation.lng}
-                  /> */}
+                  {this.state.currentLocation !== null ?
+                    <Person
+                    text={"Current location"}
+                    lat={this.state.currentLocation.lat}
+                    lng={this.state.currentLocation.lng}
+                    />
+                  : 
+                    <div></div>
+                  }
                   {this.state.actualLocation !== null ?
-                  <Marker
-                  text={"Selected location"}
-                  lat={this.state.actualLocation.lat}
-                  lng={this.state.actualLocation.lng}
-                  />
+                    <Brick
+                    text={"Actual location"}
+                    lat={this.state.actualLocation.lat}
+                    lng={this.state.actualLocation.lng}
+                    />
                   :
-                  <div></div>
+                    <div></div>
                   }
               </GoogleMapReact>
           </div>
@@ -114,6 +120,14 @@ class Visitor extends Component {
       );
   }
 
+  // clears the inscription input field
+  clearInscription = (e) => {
+    this.setState({
+      inscription: '',
+      results: []
+    })
+  }
+
   // whatever brick is selected, update the state of this component to reflect its properties
   // if the brick has a location in the database, it will update the actualLocation of this state
   // and will re-center the map based on that location
@@ -121,7 +135,7 @@ class Visitor extends Component {
     e.preventDefault();
     this.setState({
       selectedBrick: result,
-      inscription: result.Inscription,
+      inscription: result.inscription,
       results: [],
       actualLocation: {
         lat: result.lat,
@@ -207,6 +221,7 @@ class Visitor extends Component {
         streetViewControl: false,
         scaleControl: true,
         fullscreenControl: false,
+        tilt: 0,
         styles: [{
             featureType: "poi.business",
             elementType: "labels",
