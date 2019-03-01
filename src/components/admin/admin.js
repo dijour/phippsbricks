@@ -211,7 +211,10 @@ class Admin extends Component {
   addingBrick = (e) => {
     this.setState({
       adding: !this.state.adding,
-      selectedBrick: null
+      selectedBrick: null,
+      submitted: false,
+      pleaseSelectBrick: false,
+      pleaseSelectLocation: false
     })
   }
 
