@@ -380,7 +380,7 @@ class Admin extends Component {
 
   // function will not run if any flags are triggered (missing location, brick, or both)
   pushBrickLocation = (e) => {
-    console.log(this.props.user)
+    console.log("this user is: ", this.props.user)
     if (this.state.clickedLocation === null && this.state.selectedBrick === null) {
       return this.setState({
         pleaseSelectLocation: true,
@@ -440,7 +440,7 @@ class Admin extends Component {
           })
         )
           // window.location.reload();
-      })
+      }, () => (window.location.reload()))
       .catch(function(error) {
           console.error("Error writing document: ", error);
       });
@@ -462,7 +462,6 @@ class Admin extends Component {
       .then(function() {
           console.log("Document successfully written!")
           that.setState({
-            submitted: "Submitted!"
           }, () => that.componentDidMount())
           // window.location.reload();
       })
