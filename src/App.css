@@ -1,13 +1,23 @@
 .App {
   text-align: center;
-  font-family: 'Roboto', sans-serif;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+}
+
+ul {
+  font-size: 15px;
 }
 
 input {
   float: left;
   width: 90%;
-  border-color: #819842;
   font-size: 20px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
 }
 
 .App-logo {

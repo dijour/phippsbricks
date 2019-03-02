@@ -7,6 +7,7 @@
 
 }
 
+
 h3 {
 	font-family: Roboto;
 	font-style: normal;
@@ -59,14 +60,11 @@ input[type="password"]
 	font-size: 25px;
 }
 
-button {
+#loginbutton {
 	padding: 0;
-	width: 96px;
-	height: 42px;
-	margin: auto;
+	width: 5em;
 	background: #FFFFFF;
 	border: 2px solid #819842;
-	box-sizing: border-box;
 	border-radius: 5px;
 	color: 2px solid #819842;
 	font-family: Roboto;
@@ -75,11 +73,12 @@ button {
 	line-height: normal;
 	font-size: 20px;
 	text-align: center;
+	display: inline-block;
 	color: #819842;
 }
 
 
-button:hover { 
+#loginbutton:hover { 
   background-color: #819842;
   color: white;
 }

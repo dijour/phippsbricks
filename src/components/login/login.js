@@ -37,7 +37,7 @@ export class Login extends Component {
                 <input type="password" name="password" autoComplete="password" value={this.state.password} onChange={this.handleChange}/>
                 <br/><br/> <br/> <br/>
 
-                <button type="submit" onClick={this.login}> Log In</button>
+                <button type="submit" id = "loginbutton" onClick={this.login}> Log In</button>
             </form>            
         </div>
       );
