@@ -25,6 +25,7 @@ var index = client.initIndex(ALGOLIA_INDEX_NAME)
 
 //admin keys to write to the Algolia database
 var adminClient = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY, { protocol: 'https:' });
+var altAdminIndex = adminClient.initIndex("newBricks")
 var adminIndex = adminClient.initIndex(ALGOLIA_INDEX_NAME)
 
 
@@ -64,71 +65,88 @@ class Admin extends Component {
   }
 
   render = () => {
+    console.log(this.state.selectedBrick)
+    console.log(this.state.inscription)
     //create a list of li elements under the search bar, one li for every query result 
     let resultList = []
     for (let i in this.state.results) {
-      resultList.push(
-        <li key={i} style={{background: 'white', color: 'black'}} onClick={e => this.setBrick(e, this.state.results[i])}>
-          <div>Inscription: {this.state.results[i].inscription}</div>
-          <div>Section: {this.state.results[i].section}</div>
-          <div>Location in DB: {this.state.results[i].hasOwnProperty("lat") ? "Yes" : "No"} </div>
-        </li>
-      )
+      let imgSrc = missing;
+      if (this.state.results[i].hasOwnProperty("lat")) {
+        imgSrc = check;
+      }
+      if (this.state.inscription.length > 0) {
+        resultList.push(
+          <li key={i} style={{background: 'white', color: 'black', textAlign: "initial", display: 'flex', justifyContent: 'space-between'}} onClick={e => this.setBrick(e, this.state.results[i])}>
+            <div style={{float: 'left', width: '80%'}}>{this.state.results[i].inscription}</div>
+            <div >
+              <img src={imgSrc} style={{width:'30px', height:'30px', float: 'left'}}></img>
+            </div>
+            <br/>
+            <br/>
+          </li>
+        )
+      }
     }
     // this is what the render function will actually show on the page
     return (
       <div className="App">
-        <header className="App-header" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
+        <header className="App-header" >
           <button className="logout" onClick={e => this.props.logout(e)}>Logout</button>
           <br/>
           <br/>
           <br/>
           {/* Load the search bar with the results list under it */}
+          <div style={{display: 'flex'}}>
+          {this.state.selectedBrick !== null ?
+                <div>
+                  {this.state.selectedBrick.lat !== undefined ?
+                    <div style={{display: 'flex'}}>
+                      <div> Update Location: </div>
+                      <img src={check} style={{width: '30px', height: '30px', float: 'left'}}></img>
+                    </div>
+                  :
+                    <div style={{display: 'flex', height: '2vh'}}>
+                      <div style={{float: 'left'}}>Add Location: </div>
+                      <img src={missing} style={{width: '30px', height: '30px', float: 'left'}}></img>
+                    </div>
+                  }
+                </div>
+                :
+                <div></div>
+              } 
+          {this.state.inscription.length > 0 || this.state.results.length > 0 ? 
+            <button className="clear" onClick={e => this.clearInscription(e)} style={{marginLeft: '70%', marginBottom: '10px', height: '2vh'}}>Clear</button>
+          :
+            <div></div>
+          }
+          </div>
+          <input type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => setTimeout(this.handleChange(e), 1000)}></input>
           {this.state.adding ? 
             <div></div>
           :
-            <div style={{float: 'left', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-              {this.state.selectedBrick !== null ?
-              <div>
-                {this.state.selectedBrick.lat !== undefined ?
-                <img src={check} style={{width: '30px', height: '30px'}}></img>
-                :
-                <img src={missing} style={{width: '30px', height: '30px'}}></img>
-
+              <div style={{float: 'left', display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%'}}>
+                <ul style={{listStyle: 'none', left: '0%', paddingLeft: '0', width: '90%'}}>
+                  {resultList}
+                </ul>
+                {this.state.selectedBrick === null && this.state.inscription.length > 0 ? 
+                  <div style={{width: '90%'}}>
+                    <h5>--OR--</h5>
+                    <button onClick={e => this.addingBrick(e)}>{this.state.adding? "Cancel" : "Add New Brick"}</button>
+                  </div>
+                  :
+                  <div></div>
                 }
               </div>
-              :
-              <div></div>
-
-              }
-            <input type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => setTimeout(this.handleChange(e), 1000)}></input>
-            <button className="clear" onClick={e => this.clearInscription(e)}>Clear</button>
-            <ul style={{listStyle: 'none', paddingLeft: '0'}}>
-              {resultList}
-            </ul>
-            </div>
-          
           }
+
 
           {/* All possible alerts will appear below if their flags are triggered */}
           <div>{this.state.pleaseSelectBrick === true ? "Please choose a brick from the database first!" : ""}</div>
           <div>{this.state.pleaseSelectLocation === true ? "Please drop a pin on the map to update the brick location!" : ""}</div>
           <div>{this.state.selectedBrick !== null ? "Brick Selected!" : ""}</div>
-          <div>{this.state.submitted ? "Updated Location in Database!" : ""}</div>
+          <div style={{color: 'green'}}>{this.state.submitted ? "Updated Location!" : ""}</div>
           <br/>
           {/* If a brick has been selected, then a button to update its location in the database will appear*/}
-          {this.state.selectedBrick !== null && this.state.adding === false ?
-            <div>
-              {this.state.selectedBrick.lat !== undefined ?
-                <button onClick={e => this.pushBrickLocation(e)}>Edit Brick Location in Database</button>
-              :
-                <button onClick={e => this.pushBrickLocation(e)}>Add Brick Location in Database</button>
-              }
-            </div>
-            :
-            <div></div>
-          }
-          
           <br/>
           {/* The entire google map component. Most of this is default code */}
             <div style={{ height: '60vh', width: '80vw'}}>
@@ -168,13 +186,23 @@ class Admin extends Component {
                     }
                 </GoogleMapReact>
             </div>
-            <br/>
-            <h3>Brick not showing up? Add to the database:</h3>
-            <button onClick={e => this.addingBrick(e)}>{this.state.adding? "Cancel" : "Add New Brick"}</button>
+            {this.state.selectedBrick !== null && this.state.adding === false ?
+              <div>
+                {this.state.selectedBrick.lat !== undefined ?
+                  <button onClick={e => this.pushBrickLocation(e)}>Edit Brick Location in Database</button>
+                :
+                  <button onClick={e => this.pushBrickLocation(e)}>Add Brick Location in Database</button>
+                }
+              </div>
+              :
+              <div></div>
+            }
             <br/>
             {this.state.adding ? 
               <div style={{float: 'left', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
-                <form>
+                <input type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => this.handleInscriptionChange(e)}></input>
+                <button className="clear" onClick={e => this.clearInscription(e)}>Clear</button>
+                {/* <form>
                   <input type="text" placeholder="Brick inscription..." name="inscription" value={this.state.newBrick.inscription} onChange={e => this.handleTextChange(e)} required></input>
                   <br/>
                   <input type="text" placeholder="Donor last name" name="donorLastName" value={this.state.newBrick.donorLastName} onChange={e => this.handleTextChange(e)} required></input>
@@ -187,12 +215,13 @@ class Admin extends Component {
                   <br/>
                   <button className="clear" style={{float:'none', display: 'static'}} onClick={e => this.clearInscription(e)}>Clear</button>
                 </form>
-                <br/>
-                <button onClick={e => this.pushNewBrickLocation(e)}>Add New Brick to Database</button>
+                <br/> */}
+                <button onClick={e => this.pushNewBrickLocation(e)}>Add New Brick to Database</button> 
               </div>
             :
               <div></div>
             }
+            
         </header>
       </div>
     );
@@ -237,6 +266,14 @@ class Admin extends Component {
       );
   }
 
+  // just a handler for the state change watcher when adding a NEW Brick
+  handleInscriptionChange = (e) => {
+    e.preventDefault();
+    this.setState({
+      inscription: e.target.value
+    })
+  }
+
   // whatever brick is selected, update the state of this component to reflect its properties
   // if the brick has a location in the database, it will update the actualLocation of this state
   // and will re-center the map based on that location
@@ -267,8 +304,8 @@ class Admin extends Component {
     }).then((data) => {
       console.log(data.hits);
       this.setState({
-        results: data.hits.slice(0,5),
-        inscription: this.state.inscription
+        results: data.hits.slice(0,5)
+        // inscription: this.state.inscription
       })
     })
   }
@@ -312,7 +349,7 @@ class Admin extends Component {
   }
 
   // function will not run if any flags are triggered (missing location, brick, or both)
-  pushNewBrickLocation = (e) => {
+  pushNewBrickLocationMonica = (e) => {
     e.preventDefault();
     if (this.checkNewBrick(this.state.newBrick)) {
       return
@@ -428,7 +465,8 @@ class Admin extends Component {
             submitted: true,
             pleaseSelectBrick: false,
             pleaseSelectLocation: false,
-            selectedBrick: null
+            selectedBrick: null,
+            inscription: ''
           }, () => 
           adminIndex.partialUpdateObject({
             lat: that.state.clickedLocation.lat,
@@ -443,11 +481,74 @@ class Admin extends Component {
           })
         )
           // window.location.reload();
-      }, () => (window.location.reload()))
+      }, () => (console.log("finished")))
       .catch(function(error) {
           console.error("Error writing document: ", error);
       });
     }
+  }
+
+  // function will not run if any flags are triggered (missing location, brick, or both)
+  pushNewBrickLocation = (e) => {
+    console.log("pushing new brick location!")
+    if (this.state.clickedLocation === null) {
+      return this.setState({
+        pleaseSelectLocation: true,
+        pleaseSelectBrick: false
+      })
+    }
+
+    console.log("hello we made it")
+    // push everything from this state to the Firestore database
+    let that = this;
+    var date = new Date();
+    let brickObject = {};
+    brickObject.inscription = this.state.inscription;
+    brickObject.lat = this.state.clickedLocation.lat;
+    brickObject.lng = this.state.clickedLocation.lng;
+    brickObject.timeUpdated = date.toLocaleTimeString();
+    brickObject.updatedBy = this.props.user.email;
+    if (this.state.currentLocation !== null) {
+      let db = fire.firestore();
+      db.collection("newBricks").add({
+        inscription: brickObject.inscription,
+        lat: brickObject.lat,
+        lng: brickObject.lng,
+        timeUpdated: brickObject.timeUpdated,
+        updatedBy: brickObject.updatedBy
+      })
+      // update Algolia to reflect this change
+      .then(ref => {
+          console.log("Document successfully updated!")
+          console.log(ref.id)
+          brickObject.objectID = ref.id
+          console.log(brickObject)
+          that.setState({
+            submitted: true,
+            pleaseSelectBrick: false,
+            pleaseSelectLocation: false,
+            selectedBrick: null
+          }, () => 
+          altAdminIndex.saveObject({
+            inscription: brickObject.inscription,
+            lat: brickObject.lat,
+            lng: brickObject.lng,
+            timeUpdated: brickObject.timeUpdated,
+            updatedBy: brickObject.updatedBy,
+            objectID: ref.id
+          }, function(err, content) {
+            if (err) throw err;
+          
+            console.log(content);
+          })
+        )
+          // window.location.reload();
+      })
+      .catch(function(error) {
+          console.error("Error writing document: ", error);
+      });
+    }
+    
   }
 
   // not using this at the moment

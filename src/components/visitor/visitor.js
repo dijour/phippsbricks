@@ -51,8 +51,6 @@ class Visitor extends Component {
       resultList.push(
         <li key={i} style={{background: 'white', color: 'black'}}onClick={e => this.setBrick(e, this.state.results[i])}>
           <div>Inscription: {this.state.results[i].inscription}</div>
-          <div>Section: {this.state.results[i].section}</div>
-          <div>Location in DB: {this.state.results[i].hasOwnProperty("lat") ? "Yes" : "No"} </div>
         </li>
       )
     }
