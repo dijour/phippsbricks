@@ -1,5 +1,13 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Phipps Bricks
+
+This web-application was developed by a Carnegie Mellon University 67-373 team in an effort to standardize and accurize the inscriptions of over 6000 bricks donated to Phipps Conservatory. When we were first brought on to tackle the project as part of the Information Systems Course, we were faced with a data-set riddled with inconsistency. Before discussing any specific technical solutions, it was clear that whatever solution we implemented, the technology would need to quickly and efficiently create a new, accurate data set, which is easily accessible for visitors who want to know where their bricks are laid. 
+
+Thus, the 67-373 team created two solutions to this problem. First, we created a logging tool to enable Phipps employees and volunteers to quickly and accurately log the 6,000+ bricks with their GPS coordinates. Second, we created a front-facing tool for visitors which used the informatoin gathered in step 1 to display these bricks, and their locations. 
+
+To accomplish this simple, but effective implementation, the backbone of this web-application is structured on top of Firebase's [Firestore](https://firebase.google.com/docs/firestore/), a real time NoSQL database with lightning fast search capability and real-time updates. We also tacked [Algolia's Full-Text search](https://www.algolia.com/) capabilities onto Firestore, to enable faster and more lenient querying of the data, so search strings would not have to be matched strictly to the information in the database. The GPS information can be logged and displayed using onClick listeners in a [Google- Map-React NPM](https://github.com/google-map-react/google-map-react) package, which uses API keys from [Google Cloud Console](https://console.cloud.google.com/) to display coordinates. Finally, this solution was deployed using the [Mars React/Heroku build-pack](https://github.com/mars/create-react-app-buildpack), which quickly builds React JS code and deploys it to Heroku.
+
 ## Available Scripts
 
 In the project directory, you can run:
