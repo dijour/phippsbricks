@@ -59,7 +59,7 @@ class Visitor extends Component {
       <div className="App">
         <header className="App-header" style={{display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column'}}>
           {/* Loads the Phipps Logo */}
-          <img src={img} style={{width: '10%', height: '10%', marginTop: '20px', marginBottom: '20px'}} className="App-logo" alt="logo" />
+          <img src={img} style={{width: '30%', height: '30%'}} className="App-logo" alt="logo" />
           <br/>
           <br/>
           <br/>
@@ -122,7 +122,8 @@ class Visitor extends Component {
   clearInscription = (e) => {
     this.setState({
       inscription: '',
-      results: []
+      results: [],
+      selectedBrick: null
     })
   }
 
