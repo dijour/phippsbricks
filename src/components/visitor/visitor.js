@@ -49,8 +49,8 @@ class Visitor extends Component {
     let resultList = []
     for (let i in this.state.results) {
       resultList.push(
-        <li key={i} style={{background: 'white', color: 'black'}}onClick={e => this.setBrick(e, this.state.results[i])}>
-          <div>Inscription: {this.state.results[i].inscription}</div>
+        <li key={i} style={{background: 'white', color: 'black', width: '100%', border: '1px solid #819842'}} onClick={e => this.setBrick(e, this.state.results[i])}>
+          <div>{this.state.results[i].inscription}</div>
         </li>
       )
     }
@@ -66,7 +66,7 @@ class Visitor extends Component {
           {/* Load the search bar with the results list under it */}
           <input type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => setTimeout(this.handleChange(e), 1000)}></input>
           <button className="clear" onClick={e => this.clearInscription(e)}>Clear</button>
-          <ul style={{listStyle: 'none', paddingLeft: '0'}}>
+          <ul style={{listStyle: 'none', paddingLeft: '0', width: '90%'}}>
             {resultList}
           </ul>
           {/* If a brick has been selected, then a button to update its location in the database will appear*/}
