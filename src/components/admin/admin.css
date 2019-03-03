@@ -28,6 +28,16 @@ h4 {
     text-align: center;
 }
 
+li {
+  display: flex;
+  text-align: initial;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.list {
+  width: 90%;
+}
 
   button {
     display: inline-block;
@@ -64,7 +74,7 @@ h4 {
     color: #819842;
 }
 
-input[text]{
+input{
     font-family: Roboto !important;
     font-style: normal     !important;
     font-weight: normal  !important;
@@ -74,6 +84,7 @@ input[text]{
     background: #FFFFFF;
     width: 228px;
     height: 29px;
+    width: 100%;
 }
 
 #logoutbutton:hover { 
@@ -122,11 +133,33 @@ input[text]{
   color: white;
 }
 
+.cancel {
+  padding: 0;
+  width: 8em;
+  height: 1.5em;
+  left: 50%;
+  background: #FFFFFF;
+  border: 2px solid #d11f1f;
+  border-radius: 5px;
+  color: 2px solid #d11f1f;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: normal;
+  line-height: normal;
+  font-size: 20px;
+  display: inline-block;
+  color: #d11f1f;
+}
+
+.cancel:hover { 
+  background-color: #d11f1f;
+  color: #ffffff;
+}
 
 #addbrick2 {
     padding: 0;
     width: 8em;
-    height: 2.5em;
+    height: 3em;
     left: 50%;
     background: #FFFFFF;
     border: 2px solid #819842;

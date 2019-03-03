@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import '../../App.css';
-import './admin.css';
+import { styles } from './admin.css';
 import fire from '../../fire.js';
 import img from '../../logo_512x512.png';
 import check from './check.png';
@@ -77,7 +77,7 @@ class Admin extends Component {
       if (this.state.inscription.length > 0) {
         resultList.push(
           <li key={i} onClick={e => this.setBrick(e, this.state.results[i])}>
-            <div style={{float: 'left', width: '80%'}}>{this.state.results[i].inscription}</div>
+            <div style={{float: 'left', width: '100%'}}>{this.state.results[i].inscription}</div>
             <div >
               <img src={imgSrc} style={{width:'30px', height:'30px', float: 'left'}}></img>
             </div>
@@ -89,7 +89,7 @@ class Admin extends Component {
     }
     // this is what the render function will actually show on the page
     return (
-      <div className="App">
+      <div className={styles}>
         <header className="App-header" >
           <button id="logoutbutton" onClick={e => this.props.logout(e)}>Logout</button>
           <br/>
@@ -97,7 +97,7 @@ class Admin extends Component {
           <br/>
           {/* Load the search bar with the results list under it */}
           <div style={{display: 'flex'}}>
-          {this.state.selectedBrick !== null ?
+          {/* {this.state.selectedBrick !== null ?
                 <div>
                   {this.state.selectedBrick.lat !== undefined ?
                     <div style={{display: 'flex'}}>
@@ -113,32 +113,44 @@ class Admin extends Component {
                 </div>
                 :
                 <div></div>
-              } 
+              }  */}
        
           </div>
            <h3 style = {{left: '0% !important'}}>Select Brick:</h3>
           <input type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => setTimeout(this.handleChange(e), 1000)}></input>
 
           {this.state.adding ? 
-            <div></div>
+            <div>
+              <button className="cancel" onClick={e => this.addingBrick(e)}>{"Cancel"}</button>
+              <br/>
+              <button id="addbrick2" onClick={e => this.pushNewBrickLocation(e)}>Add Brick to Database</button> 
+            </div>
           :
-              <div >
-                <ul style={{listStyle: 'none', left: '0%', paddingLeft: '0', width: '90%'}}>
+              <div className="list">
+                <ul style={{listStyle: 'none', left: '0%', paddingLeft: '0', width: '100%'}}>
                   {resultList}
                 </ul>
-                {this.state.selectedBrick === null && this.state.inscription.length > 0 ? 
+                {this.state.inscription.length > 0 ? 
                   <div style={{width: '90%'}}>
                    {this.state.inscription.length > 0 || this.state.results.length > 0 ? 
-            <button className="clear" onClick={e => this.clearInscription(e)}>clear search</button>
-          :
-            <div></div>
-          }
-  
-                    <h5>--OR--</h5>
-                    <button id = "addbrick" onClick={e => this.addingBrick(e)}>{this.state.adding? "Cancel" : "Add New Brick"}</button>
+                   <div>
+                      <button className="clear" onClick={e => this.clearInscription(e)}>Clear Search</button>
+                    </div>
+                    :
+                      <div></div>
+                    }
+                    { (this.state.inscription.length > 0 && this.state.selectedBrick === null )  ?
+                      <div>
+                        <h5>--OR--</h5>
+                        <button id = "addbrick" onClick={e => this.addingBrick(e)}>{"Add New Brick"}</button>
+                      </div>
+                      :
+                      <div></div>
+                    }
                   </div>
                   :
-                  <div></div>
+                  <div>                    
+                  </div>
                 }
               </div>
           }
@@ -155,7 +167,6 @@ class Admin extends Component {
           <br/>
           {/* If a brick has been selected, then a button to update its location in the database will appear*/}
           </h4>
-          <br/>
           {/* The entire google map component. Most of this is default code */}
             <div style={{ height: '60vh', width: '80vw'}}>
                 <GoogleMapReact
@@ -206,30 +217,6 @@ class Admin extends Component {
               <div></div>
             }
             <br/>
-            {this.state.adding ? 
-              <div >
-                <input type="text" placeholder="Type a brick inscription..." value={this.state.inscription} onChange={e => this.handleInscriptionChange(e)}></input>
-               
-                {/* <form>
-                  <input type="text" placeholder="Brick inscription..." name="inscription" value={this.state.newBrick.inscription} onChange={e => this.handleTextChange(e)} required></input>
-                  <br/>
-                  <input type="text" placeholder="Donor last name" name="donorLastName" value={this.state.newBrick.donorLastName} onChange={e => this.handleTextChange(e)} required></input>
-                  <br/>
-                  <input type="text" placeholder="Donor full name" name="donorName" value={this.state.newBrick.donorName} onChange={e => this.handleTextChange(e)} required></input>
-                  <br/>
-                  <input type="text" placeholder="Keyword or last name" name="inscribedLastNameOrOtherKeyword" value={this.state.newBrick.inscribedLastNameOrOtherKeyword} onChange={e => this.handleTextChange(e)} required></input>
-                  <br/>
-                  <input type="text" placeholder="Section" name="section" value={this.state.newBrick.section} onChange={e => this.handleTextChange(e)} required></input>
-                  <br/>
-                  <button className="clear" style={{float:'none', display: 'static'}} onClick={e => this.clearInscription(e)}>Clear</button>
-                </form>
-                <br/> */} <br/>
-                <button id = "addbrick2" onClick={e => this.pushNewBrickLocation(e)}>Add Brick to Database</button> 
-              </div>
-            :
-              <div></div>
-            }
-            
         </header>
       </div>
     );

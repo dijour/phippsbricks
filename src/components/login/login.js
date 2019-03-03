@@ -24,8 +24,8 @@ export class Login extends Component {
       return (
         <div className="login">
             <img src={img}  className="App-logo" alt="logo" />
-                                          {this.state.found === true ?
-                <h1>  </h1>
+                {this.state.found === true ?
+                <h1></h1>
                 :
                 <h1> Could not find an account with that email/password.</h1>
                 }
@@ -37,7 +37,7 @@ export class Login extends Component {
                 <input type="password" name="password" autoComplete="password" value={this.state.password} onChange={this.handleChange}/>
                 <br/><br/> <br/> <br/>
 
-                <button type="submit" id = "loginbutton" onClick={this.login}> Log In</button>
+                <button type="submit" id="loginbutton" onClick={this.login}> Log In</button>
             </form>            
         </div>
       );
