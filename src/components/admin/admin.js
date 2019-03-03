@@ -131,7 +131,7 @@ class Admin extends Component {
                   {resultList}
                 </ul>
                 {this.state.inscription.length > 0 ? 
-                  <div style={{width: '90%'}}>
+                  <div>
                    {this.state.inscription.length > 0 || this.state.results.length > 0 ? 
                    <div>
                       <button className="clear" onClick={e => this.clearInscription(e)}>Clear Search</button>
