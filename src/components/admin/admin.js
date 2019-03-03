@@ -14,9 +14,9 @@ import bricks from '../../phippsbricks.json';
 import * as algoliasearch from 'algoliasearch'
 
 //constants to access our Algolia index
-const ALGOLIA_ID = '0YB48ZSNOY';
-const ALGOLIA_ADMIN_KEY = '29d14e5aa9ef6cc0eca30180790e6e08';
-const ALGOLIA_SEARCH_KEY = '89d36e2116be0b0797033a466abe93b3';
+const ALGOLIA_ID = 'HU0TSEBJG4';
+const ALGOLIA_ADMIN_KEY = '36a62982ea02482b8a539c6644852f27';
+const ALGOLIA_SEARCH_KEY = 'ff17e0f1dbc1414ec3b67841109de584';
 
 //reference to the specific Algolia "bricks" index
 const ALGOLIA_INDEX_NAME = 'bricks';
@@ -671,24 +671,24 @@ class Admin extends Component {
 
   // not using this, ignore for now
   sendDBtoAlgolia = () => {
-    // let db = fire.firestore();
-    // var wholeData = [];
-    // db.collection('csv').get()
-    // .then(snapshot => {
-    //     snapshot.forEach(doc => {
-    //         console.log(doc.id);
-    //         let docCopy = doc.data();
-    //         docCopy.objectID = doc.id;
-    //         wholeData.push(docCopy)
-    //     });
-    //     // let questions = Array(wholeData.length)
-    //     var client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
-    //     var index = client.initIndex(ALGOLIA_INDEX_NAME)
+  //   let db = fire.firestore();
+  //   var wholeData = [];
+  //   db.collection('csv').get()
+  //   .then(snapshot => {
+  //       snapshot.forEach(doc => {
+  //           console.log(doc.id);
+  //           let docCopy = doc.data();
+  //           docCopy.objectID = doc.id;
+  //           wholeData.push(docCopy)
+  //       });
+  //       // let questions = Array(wholeData.length)
+  //       var client = algoliasearch(ALGOLIA_ID, ALGOLIA_ADMIN_KEY);
+  //       var index = client.initIndex(ALGOLIA_INDEX_NAME)
 
-    //     index.saveObjects(wholeData, function(err, content) {
-    //       // res.status(200).sent(content);
-    //     })
-    // })
+  //       index.saveObjects(wholeData, function(err, content) {
+  //         // res.status(200).sent(content);
+  //       })
+  //   })
   }
 
 }

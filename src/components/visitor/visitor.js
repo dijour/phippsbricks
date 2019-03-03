@@ -10,8 +10,8 @@ import Person from '../../components/map/person.js';
 import * as algoliasearch from 'algoliasearch'
 
 //constants to access our Algolia index
-const ALGOLIA_ID = '0YB48ZSNOY';
-const ALGOLIA_SEARCH_KEY = '89d36e2116be0b0797033a466abe93b3';
+const ALGOLIA_ID = 'HU0TSEBJG4';
+const ALGOLIA_SEARCH_KEY = 'ff17e0f1dbc1414ec3b67841109de584';
 
 //reference to the specific Algolia "bricks" index
 const ALGOLIA_INDEX_NAME = 'bricks';
