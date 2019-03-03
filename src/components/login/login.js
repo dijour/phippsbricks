@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../../App.css';
 import './login.css';
 import fire from '../../fire.js';
-import img from '../../logo_512x512.png';
+import img from '../../new_logo_512x512.png';
 import { Redirect } from 'react-router-dom';
 
 export class Login extends Component {
@@ -23,22 +23,21 @@ export class Login extends Component {
       }
       return (
         <div className="login">
-            <img src={img} style={{width: '10%', height: '10%', marginTop: '20px', marginBottom: '20px'}} className="App-logo" alt="logo" />
-            <br/>
-            <form onSubmit={this.login}>
-                {this.state.found === true ?
+            <img src={img}  className="App-logo" alt="logo" />
+                                          {this.state.found === true ?
                 <h1>  </h1>
-            
                 :
                 <h1> Could not find an account with that email/password.</h1>
                 }
+            <form onSubmit={this.login}>
                 <h3>Email:</h3>
-                <input style={{float: 'none'}} type="text" name="email" autoComplete="email" value={this.state.email} onChange={this.handleChange}/>
+                <input type="text" name="email" autoComplete="email" value={this.state.email} onChange={this.handleChange}/>
                 <br/>
                 <h3>Password:</h3>
-                <input style={{float: 'none'}} type="password" name="password" autoComplete="password" value={this.state.password} onChange={this.handleChange}/>
-                <br/><br/>
-                <button type="submit" onClick={this.login}>Phipps Log In</button>
+                <input type="password" name="password" autoComplete="password" value={this.state.password} onChange={this.handleChange}/>
+                <br/><br/> <br/> <br/>
+
+                <button type="submit" id = "loginbutton" onClick={this.login}> Log In</button>
             </form>            
         </div>
       );
