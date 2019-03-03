@@ -135,7 +135,7 @@ class Admin extends Component {
           }
   
                     <h5>--OR--</h5>
-                    <button onClick={e => this.addingBrick(e)}>{this.state.adding? "Cancel" : "Add New Brick"}</button>
+                    <button id = "addbrick" onClick={e => this.addingBrick(e)}>{this.state.adding? "Cancel" : "Add New Brick"}</button>
                   </div>
                   :
                   <div></div>
@@ -223,8 +223,8 @@ class Admin extends Component {
                   <br/>
                   <button className="clear" style={{float:'none', display: 'static'}} onClick={e => this.clearInscription(e)}>Clear</button>
                 </form>
-                <br/> */}
-                <button onClick={e => this.pushNewBrickLocation(e)}>Add New Brick to Database</button> 
+                <br/> */} <br/>
+                <button id = "addbrick2" onClick={e => this.pushNewBrickLocation(e)}>Add Brick to Database</button> 
               </div>
             :
               <div></div>
